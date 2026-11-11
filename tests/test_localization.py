@@ -10,7 +10,7 @@ class LocalizationTests(unittest.TestCase):
         lua = LuaRuntime(unpack_returned_tuples=True)
         lua.globals().GetLocale = lambda: locale
         ns = lua.table()
-        for file in ('Locale/enUS.lua', 'Locale/zhCN.lua'):
+        for file in ('Locale/enUS.lua', 'Locale/zhCN.lua', 'Locale/zhTW.lua'):
             lua.execute('return function(...) ' + (ROOT / file).read_text(encoding='utf-8-sig') + '\nend')('HunterPetCollector', ns)
         return ns.L
 
@@ -24,11 +24,16 @@ class LocalizationTests(unittest.TestCase):
         self.assertEqual(lang['Collection'], '收藏')
         self.assertEqual(lang['Not translated'], 'Not translated')
 
+    def test_traditional_chinese(self):
+        self.assertEqual(self.load('zhTW')['Collection'], '收藏')
+        self.assertEqual(self.load('zhTW')['Options'], '設定')
+
     def test_toc_loads_locales_before_core(self):
         for file in ROOT.glob('*.toc'):
             text = file.read_text(encoding='utf-8-sig')
             self.assertLess(text.index('Locale\\enUS.lua'), text.index('Locale\\zhCN.lua'))
-            self.assertLess(text.index('Locale\\zhCN.lua'), text.index('Core.lua'))
+            self.assertLess(text.index('Locale\\zhCN.lua'), text.index('Locale\\zhTW.lua'))
+            self.assertLess(text.index('Locale\\zhTW.lua'), text.index('Core.lua'))
 
 
 class OptionsTests(unittest.TestCase):

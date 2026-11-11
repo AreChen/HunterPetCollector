@@ -15,6 +15,7 @@
 
 Locale\enUS.lua
 Locale\zhCN.lua
+Locale\zhTW.lua
 Core.lua
 Data\Data_MoP.lua
 Data\Data_Forever.lua

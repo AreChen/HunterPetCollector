@@ -1,6 +1,7 @@
 -- Hunter Pet Collector - leaderboard page
 local ADDON, ns = ...
 local W = ns.W
+local L = ns.L
 
 local ROWS = 16
 local filter = "all"
@@ -57,8 +58,8 @@ function ns.BuildBoard(parent)
         ns.BroadcastScore(true, true)
         ns.RequestScores(nil, true)
         self:Disable()
-        self.text:SetText("Asked!")
-        ns.After(60, function() self:Enable(); self.text:SetText("Ask for scores") end)   -- once a minute
+        self.text:SetText(L["Asked!"])
+        ns.After(60, function() self:Enable(); self.text:SetText(L["Ask for scores"]) end)   -- once a minute
     end)
 
     -- column header

@@ -103,4 +103,4 @@ python -m pip install -r tests/requirements.txt
 python -m unittest discover -s tests -v
 ```
 
-English is the default. `Locale/zhCN.lua` supplies Simplified Chinese translations; untranslated strings currently fall back to English. Add translations using the exact English key, preserving format placeholders and WoW color codes. Some interface text and creature data remain untranslated.
+English is the default. `Locale/zhCN.lua` and `Locale/zhTW.lua` supply Simplified and Traditional Chinese translations; untranslated strings currently fall back to English. Add translations using the exact English key, preserving format placeholders and WoW color codes. Some interface text and creature data remain untranslated.

@@ -50,12 +50,12 @@ local function CanTameNow(look)
 end
 
 local SORTS = {
-    { key = "family",  label = "Family" },
-    { key = "dps",     label = "Best DPS" },
-    { key = "tank",    label = "Best tank" },
-    { key = "support", label = "Best support" },
-    { key = "rarity",  label = "Rarest first" },
-    { key = "level",   label = "Level" },
+    { key = "family",  label = L["Family"] },
+    { key = "dps",     label = L["Best DPS"] },
+    { key = "tank",    label = L["Best tank"] },
+    { key = "support", label = L["Best support"] },
+    { key = "rarity",  label = L["Rarest first"] },
+    { key = "level",   label = L["Level"] },
 }
 ns.SORTS = SORTS
 
@@ -852,8 +852,8 @@ function ns.RefreshCollection()
         end
     end
     emptyText:SetShown(#filtered == 0)
-    pageText:SetText(("Page %d / %d"):format(state.page, pages))
-    countText:SetText(("%d looks shown"):format(#filtered))
+    pageText:SetText(L["Page %d / %d"]:format(state.page, pages))
+    countText:SetText(L["%d looks shown"]:format(#filtered))
     famList:SetItems(FamilyItems())
     if state.selected and not ns.looks[state.selected.id] then state.selected = nil end
     if not state.selected and filtered[1] then ns.SelectLook(filtered[1]) else ns.SelectLook(state.selected) end
@@ -866,15 +866,15 @@ local tabs = {}
 local function UpdateHeader()
     if not main then return end
     local points, count, total, maxPoints = ns.GetScore()
-    main.pointsBar:SetProgress(points, maxPoints, ("|cffffd100%d|r / %d points"):format(points, maxPoints))
-    main.looksBar:SetProgress(count, total, ("%d / %d looks"):format(count, total))
+    main.pointsBar:SetProgress(points, maxPoints, L["|cffffd100%d|r / %d points"]:format(points, maxPoints))
+    main.looksBar:SetProgress(count, total, L["%d / %d looks"]:format(count, total))
     local pins = ns.PinCount and ns.PinCount() or 0
     main.clearPins:SetShown(pins > 0)
     local hunting = ns.IsHunting and ns.IsHunting()
     main.hunt:SetSelected(hunting)
-    main.hunt.text:SetText(hunting and ("Hunting (%d)"):format(ns.HuntCount()) or "Hunt all")
+    main.hunt.text:SetText(hunting and L["Hunting (%d)"]:format(ns.HuntCount()) or L["Hunt all"])
     main.hunt:SetWidth(main.hunt.text:GetStringWidth() + 18)
-    main.clearPins.text:SetText(("Clear pins (%d)"):format(pins))
+    main.clearPins.text:SetText(L["Clear pins (%d)"]:format(pins))
     main.clearPins:SetWidth(main.clearPins.text:GetStringWidth() + 18)
     if ns.tampered then
         main.pointsBar:SetProgress(points, maxPoints, "|cffff4040Edited outside the game - /hpc reset|r")
