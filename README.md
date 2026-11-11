@@ -2,7 +2,7 @@
 
 A transmog-style journal of every tameable hunter pet look for **WoW: Forever** and **Mists of Pandaria Classic**.
 
-This project builds on [Hunter Pet Collector on CurseForge](https://www.curseforge.com/wow/addons/hunter-pet-collector), originally credited to Ben in the addon metadata. This repository contains further changes to the interface and localization. The original project's included README and `LICENSE` identify GPLv3; its CurseForge listing currently displays “All Rights Reserved”, so the upstream licensing status should be confirmed with the copyright holder before redistribution.
+This project builds on [Hunter Pet Collector on CurseForge](https://www.curseforge.com/wow/addons/hunter-pet-collector), originally credited to Ben in the addon metadata. This repository contains further changes to the interface and localization. The original project's included README and `LICENSE` identify GPLv3.
 
 ## Features
 
@@ -92,7 +92,7 @@ Then delete the old `HunterPetCodex` addon folder. The folder name won't change 
 
 ## Licence and credits
 
-The included `LICENSE` is GNU GPL v3. The upstream listing currently displays a different license; see the provenance note above. The spawn data in `Data/Spawns_*.lua` is derived from QuestieDB, which the Questie team allows to be reused under GPLv3. Thanks to the Questie team and contributors. This addon is not affiliated with Questie. The pet food list in `Data/PetFoods.lua` is taken from the [CMaNGOS classic database](https://github.com/cmangos/classic-db) (GPLv3).
+The included `LICENSE` is GNU GPL v3. The spawn data in `Data/Spawns_*.lua` and NPC translations in `Locale/NPC_zh*.lua` are derived from QuestieDB, which the Questie team allows to be reused under GPLv3. Thanks to the Questie team and contributors. This addon is not affiliated with Questie. The pet food list in `Data/PetFoods.lua` is taken from the [CMaNGOS classic database](https://github.com/cmangos/classic-db) (GPLv3).
 
 ## Development and localization
 
@@ -103,4 +103,4 @@ python -m pip install -r tests/requirements.txt
 python -m unittest discover -s tests -v
 ```
 
-English is the default. `Locale/zhCN.lua` and `Locale/zhTW.lua` supply Simplified and Traditional Chinese translations; untranslated strings currently fall back to English. Add translations using the exact English key, preserving format placeholders and WoW color codes. Some interface text and creature data remain untranslated.
+English is the default. `Locale/zhCN.lua` and `Locale/zhTW.lua` supply Simplified and Traditional Chinese translations; untranslated strings currently fall back to English. Add translations using the exact English key, preserving format placeholders and WoW color codes. Some interface text and creature data remain untranslated. `Locale/NPC_ForeverExtra.lua` contains community translations for additional Forever creatures; these names may differ from the official game localization. NPC translations were extracted from QuestieDB v1.0.14; `scripts/extract_questiedb_locales.py` documents how to regenerate them from a baked QuestieDB TOC (requires `cbor2`).

@@ -109,14 +109,14 @@ function ns.BuildIndex()
     if not data then return end
 
     for id, f in pairs(data.families) do
-        ns.families[id] = { id = id, name = f[1], icon = "Interface\\Icons\\" .. f[2], exotic = f[3] and true or false }
+        ns.families[id] = { id = id, name = L[f[1]], englishName = f[1], icon = "Interface\\Icons\\" .. f[2], exotic = f[3] and true or false }
     end
 
     for _, row in ipairs(data.looks) do
         local look = { id = row[1], family = row[2], rarity = row[3], sources = {} }
         for i = 4, #row do
             local s = row[i]
-            local src = { npc = s[1], name = s[2], minLevel = s[3], maxLevel = s[4], cls = s[5], zone = s[6] }
+            local src = { npc = s[1], name = ns.LocalizeNPC(s[1], s[2]), englishName = s[2], minLevel = s[3], maxLevel = s[4], cls = s[5], zone = ns.LocalizeZone(s[6], s[1], ns.flavor), englishZone = s[6] }
             look.sources[#look.sources + 1] = src
             ns.npcToLook[s[1]] = look
         end
@@ -585,7 +585,7 @@ end
 local function FamilyIdByName(fname)
     if not fname or issecret(fname) then return nil end
     for id, f in pairs(ns.families) do
-        if f.name == fname then return id end
+        if f.name == fname or f.englishName == fname then return id end
     end
 end
 

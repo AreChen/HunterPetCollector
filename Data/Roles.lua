@@ -7,6 +7,7 @@
 --   support = heals, battle res, Bloodlust, party buffs
 -- note = what the family brings
 local _, ns = ...
+local L = ns.L
 
 ns.ROLE_DATA = {}
 
@@ -120,8 +121,8 @@ end
 
 ns.ROLE_INFO = {
     dps     = { label = "DPS",     color = "ff7f50", icon = "Interface\\Icons\\Ability_Hunter_BeastCall" },
-    tank    = { label = "Tank",    color = "6fa8dc", icon = "Interface\\Icons\\Ability_Defend" },
-    support = { label = "Support", color = "8fd16a", icon = "Interface\\Icons\\Spell_Nature_HealingTouch" },
+    tank    = { label = L["Tank"],    color = "6fa8dc", icon = "Interface\\Icons\\Ability_Defend" },
+    support = { label = L["Support"], color = "8fd16a", icon = "Interface\\Icons\\Spell_Nature_HealingTouch" },
 }
 
 function ns.RoleSummary(look, compact)

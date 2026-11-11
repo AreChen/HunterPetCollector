@@ -35,10 +35,10 @@ local function MatchesSearch(look, q)
     if q == "" then return true end
     if look.name:lower():find(q, 1, true) then return true end
     for _, s in ipairs(look.sources) do
-        if s.name:lower():find(q, 1, true) or (s.zone or ""):lower():find(q, 1, true) then return true end
+        if s.name:lower():find(q, 1, true) or (s.englishName or ""):lower():find(q, 1, true) or (s.zone or ""):lower():find(q, 1, true) or (s.englishZone or ""):lower():find(q, 1, true) then return true end
     end
     local fam = ns.families[look.family]
-    return fam and fam.name:lower():find(q, 1, true) ~= nil
+    return fam and (fam.name:lower():find(q, 1, true) ~= nil or (fam.englishName or ""):lower():find(q, 1, true) ~= nil)
 end
 
 local function CanTameNow(look)
@@ -123,7 +123,7 @@ local function TileTooltip(tile)
     GameTooltip:AddDoubleLine(fam and fam.name or "Beast", r.name .. "  |cffffd100" .. r.points .. " pts|r", 0.8, 0.8, 0.8, 1, 1, 1)
     local roleText, roleData = ns.RoleSummary(look)
     GameTooltip:AddLine(roleText)
-    GameTooltip:AddLine(roleData.note, 0.75, 0.75, 0.75, true)
+    GameTooltip:AddLine(L[roleData.note], 0.75, 0.75, 0.75, true)
     if ns.IsCollected(look) then
         GameTooltip:AddLine(L["Collected"], 0.3, 1, 0.3)
     else
@@ -138,7 +138,7 @@ local function TileTooltip(tile)
     if ns.LookHasSpawns and ns.LookHasSpawns(look) then
         GameTooltip:AddLine(ns.IsLookPinned(look) and "Right-click to remove its map pins" or "Right-click to show spawns on your map", 0.5, 0.5, 0.5)
     end
-    GameTooltip:AddLine("Click to inspect", 0.5, 0.5, 0.5)
+    GameTooltip:AddLine(L["Click to inspect"], 0.5, 0.5, 0.5)
     GameTooltip:Show()
 end
 
@@ -361,7 +361,7 @@ local function BuildDetail(parent)
     camera:SetFrameLevel(model:GetFrameLevel() + 5)
     local spin = W.Button(camera, "Spin", 42, 18)
     spin:SetPoint("RIGHT", -46, 0)
-    spin.tooltip = "Turntable rotation"
+    spin.tooltip = L["Turntable rotation"]
     spin:SetScript("OnClick", function(self)
         model.spinning = not model.spinning
         self:SetSelected(model.spinning)
@@ -430,7 +430,7 @@ local function BuildDetail(parent)
     detail.combatNote = combatNote
 
     hdr:SetPoint("TOPLEFT", combatNote, "BOTTOMLEFT", 0, -6)
-    hdr:SetText("WHERE TO TAME")
+    hdr:SetText(L["WHERE TO TAME"])
     hdr:SetTextColor(W.ACCENT[1], W.ACCENT[2], W.ACCENT[3])
     detail.srcHeader = hdr
 
@@ -498,17 +498,17 @@ local function BuildDetail(parent)
     end, function(row, src)
         row.src = src
         local tag = ""
-        if src.cls == 4 then tag = " |cff0070dd(Rare)|r"
-        elseif src.cls == 2 then tag = " |cffa335ee(Rare Elite)|r"
-        elseif src.cls == 1 then tag = " |cffffd100(Elite)|r"
-        elseif src.cls == 3 then tag = " |cffff8000(Boss)|r" end
+        if src.cls == 4 then tag = " |cff0070dd(" .. L["Rare"] .. ")|r"
+        elseif src.cls == 2 then tag = " |cffa335ee(" .. L["Rare Elite"] .. ")|r"
+        elseif src.cls == 1 then tag = " |cffffd100(" .. L["Elite"] .. ")|r"
+        elseif src.cls == 3 then tag = " |cffff8000(" .. L["Boss"] .. ")|r" end
         row.name:SetText(src.name .. tag)
         local lv
         if (src.minLevel or 0) == 0 and (src.maxLevel or 0) == 0 then lv = ""
-        elseif src.minLevel == src.maxLevel or (src.maxLevel or 0) == 0 then lv = "Lvl " .. src.minLevel
-        else lv = ("Lvl %d-%d"):format(src.minLevel, src.maxLevel) end
+        elseif src.minLevel == src.maxLevel or (src.maxLevel or 0) == 0 then lv = L["Lvl %d"]:format(src.minLevel)
+        else lv = L["Lvl %d-%d"]:format(src.minLevel, src.maxLevel) end
         row.lvl:SetText(lv)
-        row.zone:SetText(src.zone ~= "" and src.zone or "Unknown location")
+        row.zone:SetText(src.zone ~= "" and src.zone or L["Unknown location"])
         row.pinIcon:SetShown(ns.IsNPCPinned and ns.IsNPCPinned(src.npc) or false)
     end)
     srcList:SetPoint("TOPLEFT", hdr, "BOTTOMLEFT", 0, -6)
@@ -565,18 +565,18 @@ function ns.SelectLook(look)
         detail.name:SetText(look.name)
         detail.name:SetTextColor(r.color[1], r.color[2], r.color[3])
         detail.famIcon:SetTexture(fam and fam.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
-        detail.fam:SetText((fam and fam.name or "Unknown family") .. (fam and fam.exotic and "  |cffff8000Exotic|r" or "") .. (look.discovered and "  |cff999999(discovered in-game)|r" or ""))
-        detail.rarity:SetText(("|cff%s%s|r  |cffffd100%d pts|r"):format(r.hex, r.name, r.points))
+        detail.fam:SetText((fam and fam.name or L["Unknown family"]) .. (fam and fam.exotic and "  |cffff8000" .. L["Exotic"] .. "|r" or "") .. (look.discovered and "  |cff999999" .. L["(discovered in-game)"] .. "|r" or ""))
+        detail.rarity:SetText(L["|cff%s%s|r  |cffffd100%d pts|r"]:format(r.hex, r.name, r.points))
         local roleText, roleData = ns.RoleSummary(look)
-        detail.combat:SetText(roleText .. (roleData.type and ("  |cff999999(" .. roleData.type .. ")|r") or ""))
-        detail.combatNote:SetText(roleData.note or "")
+        detail.combat:SetText(roleText .. (roleData.type and ("  |cff999999(" .. L[roleData.type] .. ")|r") or ""))
+        detail.combatNote:SetText(L[roleData.note or ""])
         local have = ns.Collected()[look.id]
         if have then
             local when = have.t and date("%d %b %Y", have.t) or ""
-            local how = ({ pet = " - tamed/summoned", stable = " - found in stable" })[have.auto or ""] or ""
-            detail.status:SetText("|cff4cff4cCollected|r  |cff999999" .. when .. how .. "|r")
+            local how = ({ pet = L[" - tamed/summoned"], stable = L[" - found in stable"] })[have.auto or ""] or ""
+            detail.status:SetText("|cff4cff4c" .. L["Collected"] .. "|r  |cff999999" .. when .. how .. "|r")
         else
-            detail.status:SetText("|cffff5555Not collected|r  |cff999999- tame it to collect|r")
+            detail.status:SetText("|cffff5555" .. L["Not collected"] .. "|r")
         end
         ns.UpdateMapButton()
         detail.sources.offset = 0
@@ -694,7 +694,7 @@ local function BuildCollection(parent)
         b:SetPoint("TOPLEFT", bx, y)
         bx = bx + w + 3
         b.key = rr[1]
-        b.tooltip = rr[1] == "all" and "Normal order, families A-Z" or ("Rank every pet from best to worst " .. rr[2] .. ".\nThe family list on the left becomes the ranking.\n|cff999999" .. ((ns.ROLE_DATA[ns.flavor] or {}).specNote or "") .. "|r")
+        b.tooltip = rr[1] == "all" and "Normal order, families A-Z" or ("Rank every pet from best to worst " .. rr[2] .. ".\nThe family list on the left becomes the ranking.\n|cff999999" .. L[(ns.ROLE_DATA[ns.flavor] or {}).specNote or ""] .. "|r")
         b:SetScript("OnClick", function()
             state.role = rr[1]
             state.sort = rr[1] == "all" and "family" or rr[1]
@@ -837,7 +837,7 @@ function ns.RefreshCollection()
             tile.famIcon:SetTexture(fam and fam.icon or nil)
             tile.name:SetText(look.name)
             local s = look.sources[1]
-            local lv = look.minLevel > 0 and ("Lvl " .. look.minLevel .. (look.maxLevel > look.minLevel and ("-" .. look.maxLevel) or "")) or ""
+            local lv = look.minLevel > 0 and ((look.maxLevel > look.minLevel and L["Lvl %d-%d"]:format(look.minLevel, look.maxLevel) or L["Lvl %d"]:format(look.minLevel))) or ""
             if state.sort == "dps" or state.sort == "tank" or state.sort == "support" then
                 local info = ns.ROLE_INFO[state.sort]
                 tile.sub:SetText(("|cff%s%s %d|r"):format(info.color, info.label, ns.FamilyRole(look.family)[state.sort]))

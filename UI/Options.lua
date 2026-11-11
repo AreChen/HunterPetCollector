@@ -58,22 +58,9 @@ local function Build(parent)
     panel.name = "Hunter Pet Collector"
     panel:Hide()
 
-    local icon = ns.CreateLogo(panel, 56)
-    icon:SetPoint("TOPLEFT", 10, -6)
-    local title = W.Text(panel, "GameFontNormalLarge", 20, "LEFT")
-    title:SetPoint("TOPLEFT", icon, "TOPRIGHT", 10, -2)
-    title:SetText("Hunter Pet Collector")
-    local sub = W.Text(panel, "GameFontHighlightSmall", nil, "LEFT")
-    sub:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -4)
-    sub:SetText(("v%s  -  %s"):format(ns.VERSION, ns.flavorName))
-
-    local stats = W.Text(panel, "GameFontHighlight", nil, "RIGHT")
-    stats:SetPoint("TOPRIGHT", -20, -22)
-    panel.stats = stats
-
     -- everything below the title scrolls, so the panel fits any screen
     local scroll = CreateFrame("ScrollFrame", nil, panel, "UIPanelScrollFrameTemplate")
-    scroll:SetPoint("TOPLEFT", 0, -62)
+    scroll:SetPoint("TOPLEFT", 0, -8)
     scroll:SetPoint("BOTTOMRIGHT", -28, 8)
     local content = CreateFrame("Frame", nil, scroll)
     content:SetSize(600, 900)
@@ -198,7 +185,7 @@ local function Build(parent)
     local bnote = W.Text(content, "GameFontHighlightSmall", nil, "LEFT")
     bnote:SetPoint("TOPLEFT", 24, y)
     bnote:SetPoint("RIGHT", content, "RIGHT", -24, 0)
-    bnote:SetText("Your collection is saved by the game and backed up account-wide. For extra safety (new PC, reinstall, lost WTF folder), save a backup code outside the game.")
+    bnote:SetText(L["Your collection is saved by the game and backed up account-wide. For extra safety (new PC, reinstall, lost WTF folder), save a backup code outside the game."])
     y = y - 32
     Button(content, "Get backup code", 150, 20, y, function() ns.ShowExport() end)
     Button(content, "Restore from code", 150, 176, y, function() ns.ShowImport() end)
@@ -208,7 +195,7 @@ local function Build(parent)
     local note = W.Text(content, "GameFontHighlightSmall", nil, "LEFT")
     note:SetPoint("TOPLEFT", 24, y)
     note:SetPoint("RIGHT", content, "RIGHT", -24, 0)
-    note:SetText("Looks are only collected by taming or summoning the beast (and from the stable where the game allows it). There's no manual marking, so every score on the leaderboard was earned in-game.")
+    note:SetText(L["Looks are only collected by taming or summoning the beast (and from the stable where the game allows it). There's no manual marking, so every score on the leaderboard was earned in-game."])
     y = y - 40
     Button(content, "Open the collection", 140, 20, y, function()
         -- don't close the game's settings window from here (that taints the
@@ -241,8 +228,6 @@ local function Build(parent)
         for _, b in ipairs(panel.sizeButtons) do
             if math.abs((ns.db.pinScale or 1) - b.value) < 0.01 then b:LockHighlight() else b:UnlockHighlight() end
         end
-        local points, count, total, maxPoints = ns.GetScore()
-        stats:SetText(("|cffffd100%d|r / %d points\n%d / %d looks   %d pinned"):format(points, maxPoints, count, total, ns.PinCount()))
     end
     panel:SetScript("OnShow", panel.refresh)
 
