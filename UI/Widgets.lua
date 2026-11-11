@@ -48,7 +48,7 @@ function W.Button(parent, text, width, height)
         if not self.selected then self:SetBackdropBorderColor(W.ACCENT[1], W.ACCENT[2], W.ACCENT[3], 0.8) end
         if self.tooltip then
             GameTooltip:SetOwner(self, "ANCHOR_TOP")
-            GameTooltip:SetText(self.tooltip, 1, 1, 1, 1, true)
+            GameTooltip:SetText(L[self.tooltip], 1, 1, 1, 1, true)
             GameTooltip:Show()
         end
     end)
@@ -220,8 +220,8 @@ end
 
 function W.TimeAgo(ts)
     local d = (GetServerTime and GetServerTime() or time()) - (ts or 0)
-    if d < 90 then return "just now" end
-    if d < 3600 then return math.floor(d / 60) .. "m ago" end
-    if d < 86400 then return math.floor(d / 3600) .. "h ago" end
-    return math.floor(d / 86400) .. "d ago"
+    if d < 90 then return L["just now"] end
+    if d < 3600 then return L["%dm ago"]:format(math.floor(d / 60)) end
+    if d < 86400 then return L["%dh ago"]:format(math.floor(d / 3600)) end
+    return L["%dd ago"]:format(math.floor(d / 86400))
 end

@@ -10,6 +10,7 @@
 -- spells that way), so it can only be changed out of combat: food choice and
 -- visibility update as soon as combat ends.
 local ADDON, ns = ...
+local L = ns.L
 local F = {}
 ns.Feed = F
 
@@ -169,25 +170,25 @@ local function Build()
 
     button:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_TOP")
-        GameTooltip:AddLine("Feed pet", 1, 1, 1)
+        GameTooltip:AddLine(L["Feed pet"], 1, 1, 1)
         local h = GetPetHappiness and select(1, GetPetHappiness())
         if h and HAPPY_TEXT[h] then
             local c = HAPPY_COLOR[h]
-            GameTooltip:AddLine(HAPPY_TIP[h], c[1], c[2], c[3])
+            GameTooltip:AddLine(L[HAPPY_TIP[h]], c[1], c[2], c[3])
         end
         local food = self.food
         if food then
-            GameTooltip:AddDoubleLine("Will use", ItemName(food.id), 0.8, 0.8, 0.8, 1, 1, 1)
-            GameTooltip:AddDoubleLine("In your bags", tostring(food.count), 0.8, 0.8, 0.8, 1, 1, 1)
+            GameTooltip:AddDoubleLine(L["Will use"], ItemName(food.id), 0.8, 0.8, 0.8, 1, 1, 1)
+            GameTooltip:AddDoubleLine(L["In your bags"], tostring(food.count), 0.8, 0.8, 0.8, 1, 1, 1)
         else
-            GameTooltip:AddLine("No food in your bags that your pet will eat.", 1, 0.4, 0.4, true)
+            GameTooltip:AddLine(L["No food in your bags that your pet will eat."], 1, 0.4, 0.4, true)
         end
         local diet = {}
-        for i in pairs(F.Diet()) do diet[#diet + 1] = FOOD_TYPES[i] end
+        for i in pairs(F.Diet()) do diet[#diet + 1] = L[FOOD_TYPES[i]] end
         table.sort(diet)
-        if #diet > 0 then GameTooltip:AddDoubleLine("Eats", table.concat(diet, ", "), 0.8, 0.8, 0.8, 0.67, 0.83, 0.45) end
+        if #diet > 0 then GameTooltip:AddDoubleLine(L["Eats"], table.concat(diet, ", "), 0.8, 0.8, 0.8, 0.67, 0.83, 0.45) end
         GameTooltip:AddLine(" ")
-        GameTooltip:AddLine("Click to feed  -  Shift-drag to move", 0.5, 0.5, 0.5)
+        GameTooltip:AddLine(L["Click to feed  -  Shift-drag to move"], 0.5, 0.5, 0.5)
         GameTooltip:Show()
     end)
     button:SetScript("OnLeave", function() GameTooltip:Hide() end)

@@ -120,7 +120,7 @@ local function TileTooltip(tile)
     local fam = ns.families[look.family]
     GameTooltip:SetOwner(tile, "ANCHOR_RIGHT")
     GameTooltip:AddLine(look.name, r.color[1], r.color[2], r.color[3])
-    GameTooltip:AddDoubleLine(fam and fam.name or "Beast", r.name .. "  |cffffd100" .. r.points .. " pts|r", 0.8, 0.8, 0.8, 1, 1, 1)
+    GameTooltip:AddDoubleLine(fam and fam.name or L["Beast"], L["|cff%s%s|r  |cffffd100%d pts|r"]:format(r.hex, r.name, r.points), 0.8, 0.8, 0.8, 1, 1, 1)
     local roleText, roleData = ns.RoleSummary(look)
     GameTooltip:AddLine(roleText)
     GameTooltip:AddLine(L[roleData.note], 0.75, 0.75, 0.75, true)
@@ -132,11 +132,11 @@ local function TileTooltip(tile)
     local s = look.sources[1]
     if s then
         GameTooltip:AddLine(" ")
-        GameTooltip:AddLine(("%s  |cff999999(%d source%s)|r"):format(s.zone ~= "" and s.zone or "Unknown location", #look.sources, #look.sources == 1 and "" or "s"), 0.9, 0.9, 0.9, true)
+        GameTooltip:AddLine(L["%s  |cff999999(%d source%s)|r"]:format(s.zone ~= "" and s.zone or L["Unknown location"], #look.sources, #look.sources == 1 and "" or "s"), 0.9, 0.9, 0.9, true)
     end
     GameTooltip:AddLine(" ")
     if ns.LookHasSpawns and ns.LookHasSpawns(look) then
-        GameTooltip:AddLine(ns.IsLookPinned(look) and "Right-click to remove its map pins" or "Right-click to show spawns on your map", 0.5, 0.5, 0.5)
+        GameTooltip:AddLine(ns.IsLookPinned(look) and L["Right-click to remove its map pins"] or L["Right-click to show spawns on your map"], 0.5, 0.5, 0.5)
     end
     GameTooltip:AddLine(L["Click to inspect"], 0.5, 0.5, 0.5)
     GameTooltip:Show()
@@ -467,18 +467,18 @@ local function BuildDetail(parent)
             self.hl:SetVertexColor(1, 1, 1, 0.05)
             GameTooltip:SetOwner(self, "ANCHOR_LEFT")
             GameTooltip:AddLine(self.src.name, 1, 1, 1)
-            GameTooltip:AddLine(self.src.zone ~= "" and self.src.zone or "Unknown location", 0.8, 0.8, 0.8, true)
+            GameTooltip:AddLine(self.src.zone ~= "" and self.src.zone or L["Unknown location"], 0.8, 0.8, 0.8, true)
             local n = ns.SpawnCount and ns.SpawnCount(self.src.npc) or 0
             if n > 0 then
-                GameTooltip:AddLine(("%d known spawn point%s"):format(n, n == 1 and "" or "s"), 0.6, 0.8, 0.6)
+                GameTooltip:AddLine(L["%d known spawn point%s"]:format(n, n == 1 and "" or "s"), 0.6, 0.8, 0.6)
                 GameTooltip:AddLine(" ")
-                GameTooltip:AddLine("Click: pin on map and open it", 0.5, 0.5, 0.5)
-                GameTooltip:AddLine("Shift-click: waypoint to the nearest spawn", 0.5, 0.5, 0.5)
-                GameTooltip:AddLine("Right-click: remove this beast's pins", 0.5, 0.5, 0.5)
+                GameTooltip:AddLine(L["Click: pin on map and open it"], 0.5, 0.5, 0.5)
+                GameTooltip:AddLine(L["Shift-click: waypoint to the nearest spawn"], 0.5, 0.5, 0.5)
+                GameTooltip:AddLine(L["Right-click: remove this beast's pins"], 0.5, 0.5, 0.5)
             else
-                GameTooltip:AddLine("No spawn coordinates known", 0.6, 0.6, 0.6)
+                GameTooltip:AddLine(L["No spawn coordinates known"], 0.6, 0.6, 0.6)
             end
-            GameTooltip:AddLine("NPC ID " .. (self.src.npc or "?"), 0.4, 0.4, 0.4)
+            GameTooltip:AddLine(L["NPC ID %s"]:format(self.src.npc or "?"), 0.4, 0.4, 0.4)
             GameTooltip:Show()
         end)
         row:SetScript("OnLeave", function(self) self.hl:SetVertexColor(1, 1, 1, 0); GameTooltip:Hide() end)
@@ -671,7 +671,7 @@ local function BuildCollection(parent)
         b.swatch:SetTexture(W.WHITE)
         b.swatch:SetPoint("TOPLEFT", 3, -3)
         b.swatch:SetPoint("BOTTOMRIGHT", -3, 3)
-        b.tooltip = ("%s  (%d pts)\nClick to show/hide"):format(r.name, r.points)
+        b.tooltip = L["%s  (%d pts)\nClick to show/hide"]:format(r.name, r.points)
         local function paint()
             b.swatch:SetVertexColor(r.color[1], r.color[2], r.color[3], state.rarity[i] and 1 or 0.15)
         end
@@ -695,7 +695,7 @@ local function BuildCollection(parent)
         b:SetPoint("TOPLEFT", bx, y)
         bx = bx + w + 3
         b.key = rr[1]
-        b.tooltip = rr[1] == "all" and "Normal order, families A-Z" or ("Rank every pet from best to worst " .. rr[2] .. ".\nThe family list on the left becomes the ranking.\n|cff999999" .. L[(ns.ROLE_DATA[ns.flavor] or {}).specNote or ""] .. "|r")
+        b.tooltip = rr[1] == "all" and L["Normal order, families A-Z"] or L["Rank every pet from best to worst %s.\nThe family list on the left becomes the ranking.\n|cff999999%s|r"]:format(rr[2], L[(ns.ROLE_DATA[ns.flavor] or {}).specNote or ""])
         b:SetScript("OnClick", function()
             state.role = rr[1]
             state.sort = rr[1] == "all" and "family" or rr[1]
@@ -968,7 +968,7 @@ local function BuildMain()
     gear:SetNormalTexture("Interface\\Buttons\\UI-OptionsButton")
     gear:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight", "ADD")
     gear:SetScript("OnClick", function() ns.OpenOptions() end)
-    gear:SetScript("OnEnter", function(self) GameTooltip:SetOwner(self, "ANCHOR_BOTTOM"); GameTooltip:SetText("Options"); GameTooltip:Show() end)
+    gear:SetScript("OnEnter", function(self) GameTooltip:SetOwner(self, "ANCHOR_BOTTOM"); GameTooltip:SetText(L["Options"]); GameTooltip:Show() end)
     gear:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
     local clearPins = W.Button(header, "Clear pins", 74, 18)

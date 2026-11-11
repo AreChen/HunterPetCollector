@@ -4,6 +4,7 @@
 --   * Rare tracker: nameplates, mouseover, target and minimap rare markers are
 --     watched; a wanted beast pops an alert with its model, a sound and a Target button.
 local ADDON, ns = ...
+local L = ns.L
 local W = ns.W
 
 local ARRIVE_YARDS = 35       -- "you're here, look around"
@@ -330,14 +331,14 @@ local function BuildArrow()
     end)
     f:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
-        GameTooltip:AddLine("Hunter Pet Collector - tracking", 1, 1, 1)
+        GameTooltip:AddLine(L["Hunter Pet Collector - tracking"], 1, 1, 1)
         local look = TrackedLook()
         if look then GameTooltip:AddLine(look.name, unpack(ns.RARITY[look.rarity].color)) end
         GameTooltip:AddLine(" ")
-        GameTooltip:AddLine("Click: open in the collection", 0.6, 0.6, 0.6)
-        GameTooltip:AddLine("Ctrl-click: skip to the next spawn", 0.6, 0.6, 0.6)
-        GameTooltip:AddLine("Shift-drag: move", 0.6, 0.6, 0.6)
-        GameTooltip:AddLine("Right-click: stop tracking", 0.6, 0.6, 0.6)
+        GameTooltip:AddLine(L["Click: open in the collection"], 0.6, 0.6, 0.6)
+        GameTooltip:AddLine(L["Ctrl-click: skip to the next spawn"], 0.6, 0.6, 0.6)
+        GameTooltip:AddLine(L["Shift-drag: move"], 0.6, 0.6, 0.6)
+        GameTooltip:AddLine(L["Right-click: stop tracking"], 0.6, 0.6, 0.6)
         GameTooltip:Show()
     end)
     f:SetScript("OnLeave", function() GameTooltip:Hide() end)

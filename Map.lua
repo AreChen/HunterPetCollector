@@ -1,6 +1,7 @@
 -- Hunter Pet Collector - spawn pins on the world map and minimap
 -- Pins are saved per NPC and stay until the player removes them.
 local ADDON, ns = ...
+local L = ns.L
 local W = ns.W
 
 ------------------------------------------------------------------------
@@ -152,19 +153,19 @@ local function MakePin(parent, size)
         tip:SetOwner(self, "ANCHOR_RIGHT")
         tip:AddLine(src and src.name or look.name, 1, 1, 1)
         if src then
-            local lv = (src.minLevel or 0) > 0 and ("Level " .. src.minLevel .. ((src.maxLevel or 0) > src.minLevel and ("-" .. src.maxLevel) or "")) or ""
+            local lv = (src.minLevel or 0) > 0 and (((src.maxLevel or 0) > src.minLevel) and L["Lvl %d-%d"]:format(src.minLevel, src.maxLevel) or L["Lvl %d"]:format(src.minLevel)) or ""
             local tag = ({ [1] = "Elite", [2] = "Rare Elite", [3] = "Boss", [4] = "Rare" })[src.cls or 0]
-            tip:AddLine(lv .. (tag and ("  |cff0070dd" .. tag .. "|r") or ""), 0.8, 0.8, 0.8)
+            tip:AddLine(lv .. (tag and ("  |cff0070dd" .. L[tag] .. "|r") or ""), 0.8, 0.8, 0.8)
         end
         local fam = ns.families[look.family]
-        tip:AddDoubleLine((fam and fam.name or "Beast") .. " - " .. look.name, r.name, 0.7, 0.7, 0.7, r.color[1], r.color[2], r.color[3])
-        tip:AddLine(ns.IsCollected(look) and "|cff4cff4cLook collected|r" or "|cffff5555Look not collected|r")
+        tip:AddDoubleLine((fam and fam.name or L["Beast"]) .. " - " .. look.name, r.name, 0.7, 0.7, 0.7, r.color[1], r.color[2], r.color[3])
+        tip:AddLine(ns.IsCollected(look) and ("|cff4cff4c" .. L["Look collected"] .. "|r") or ("|cffff5555" .. L["Look not collected"] .. "|r"))
         tip:AddLine(("%.1f, %.1f"):format(self.x * 100, self.y * 100), 0.5, 0.5, 0.5)
         tip:AddLine(" ")
-        if ns.IsTracking and ns.IsTracking(look) then tip:AddLine("Tracking with the arrow", 1, 0.82, 0) end
-        tip:AddLine("Click: open in the collection  -  Shift-click: waypoint", 0.5, 0.5, 0.5)
-        tip:AddLine("Ctrl-click: track this look with the arrow", 0.5, 0.5, 0.5)
-        tip:AddLine("Right-click: remove this beast's pins", 0.5, 0.5, 0.5)
+        if ns.IsTracking and ns.IsTracking(look) then tip:AddLine(L["Tracking with the arrow"], 1, 0.82, 0) end
+        tip:AddLine(L["Click: open in the collection  -  Shift-click: waypoint"], 0.5, 0.5, 0.5)
+        tip:AddLine(L["Ctrl-click: track this look with the arrow"], 0.5, 0.5, 0.5)
+        tip:AddLine(L["Right-click: remove this beast's pins"], 0.5, 0.5, 0.5)
         tip:Show()
     end)
     pin:SetScript("OnLeave", function() GameTooltip:Hide() end)

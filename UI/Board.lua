@@ -116,13 +116,13 @@ function ns.BuildBoard(parent)
             -- Forever: the realm part is just whichever realm the game put
             -- them on this time, so show the name alone
             GameTooltip:AddLine(ns.flavor == "forever" and (strsplit("-", e.name)) or e.name, W.ClassColor(e.class))
-            GameTooltip:AddDoubleLine("Points", e.points, 0.8, 0.8, 0.8, 1, 0.82, 0)
-            GameTooltip:AddDoubleLine("Looks collected", e.count or "?", 0.8, 0.8, 0.8, 1, 1, 1)
-            GameTooltip:AddDoubleLine("Last update", W.TimeAgo(e.ts), 0.8, 0.8, 0.8, 1, 1, 1)
+            GameTooltip:AddDoubleLine(L["Points"], e.points, 0.8, 0.8, 0.8, 1, 0.82, 0)
+            GameTooltip:AddDoubleLine(L["Looks collected"], e.count or "?", 0.8, 0.8, 0.8, 1, 1, 1)
+            GameTooltip:AddDoubleLine(L["Last update"], W.TimeAgo(e.ts), 0.8, 0.8, 0.8, 1, 1, 1)
             if e.direct then
-                GameTooltip:AddLine("Received directly from this player.", 0.3, 1, 0.3, true)
+                GameTooltip:AddLine(L["Received directly from this player."], 0.3, 1, 0.3, true)
             else
-                GameTooltip:AddLine("Relayed by another player - not yet confirmed directly.", 0.7, 0.7, 0.7, true)
+                GameTooltip:AddLine(L["Relayed by another player - not yet confirmed directly."], 0.7, 0.7, 0.7, true)
             end
             GameTooltip:Show()
         end)

@@ -12,6 +12,7 @@
 -- own table (ns.XP) so it can't clash with the rest of the addon.
 
 local ADDON, ns = ...
+local L = ns.L
 local X = {}
 ns.XP = X
 
@@ -92,8 +93,8 @@ local function FmtTime(sec)
     if not sec or sec <= 0 or sec ~= sec or sec == math.huge then return "-" end
     local h = math.floor(sec / 3600)
     local m = math.floor((sec % 3600) / 60)
-    if h > 0 then return h .. "h " .. m .. "m" end
-    return math.max(m, 1) .. "m"
+    if h > 0 then return L["%dh %dm"]:format(h, m) end
+    return L["%dm"]:format(math.max(m, 1))
 end
 
 local function Clamp(v, lo, hi) return math.max(lo, math.min(hi, v)) end
@@ -200,28 +201,28 @@ local function ShowTooltip(owner)
     GameTooltip:SetOwner(owner, "ANCHOR_TOP")
     local a = ns.W.ACCENT
     if state.preview then
-        GameTooltip:AddLine("Pet XP Bar (preview)", a[1], a[2], a[3])
-        GameTooltip:AddLine("No levelling pet is out.", 1, 1, 1, true)
+        GameTooltip:AddLine(L["Pet XP Bar (preview)"], a[1], a[2], a[3])
+        GameTooltip:AddLine(L["No levelling pet is out."], 1, 1, 1, true)
     else
-        GameTooltip:AddLine(string.format("%s  (Level %d)", state.name or "Pet", state.level), a[1], a[2], a[3])
-        GameTooltip:AddDoubleLine("Experience", Fmt(state.cur) .. " / " .. Fmt(state.max), 0.8, 0.8, 0.8, 1, 1, 1)
-        GameTooltip:AddDoubleLine("To next level", Fmt(state.max - state.cur), 0.8, 0.8, 0.8, 1, 1, 1)
+        GameTooltip:AddLine(L["%s  (Level %d)"]:format(state.name or L["Pet"], state.level), a[1], a[2], a[3])
+        GameTooltip:AddDoubleLine(L["Experience"], Fmt(state.cur) .. " / " .. Fmt(state.max), 0.8, 0.8, 0.8, 1, 1, 1)
+        GameTooltip:AddDoubleLine(L["To next level"], Fmt(state.max - state.cur), 0.8, 0.8, 0.8, 1, 1, 1)
         if state.session > 0 and state.sessionStart then
             local elapsed = GetTime() - state.sessionStart
             local perHour = elapsed > 0 and (state.session / elapsed * 3600) or 0
-            GameTooltip:AddDoubleLine("Gained this session", Fmt(state.session), 0.8, 0.8, 0.8, 1, 1, 1)
-            GameTooltip:AddDoubleLine("XP per hour", Fmt(perHour), 0.8, 0.8, 0.8, 1, 1, 1)
-            GameTooltip:AddDoubleLine("Time to level",
+            GameTooltip:AddDoubleLine(L["Gained this session"], Fmt(state.session), 0.8, 0.8, 0.8, 1, 1, 1)
+            GameTooltip:AddDoubleLine(L["XP per hour"], Fmt(perHour), 0.8, 0.8, 0.8, 1, 1, 1)
+            GameTooltip:AddDoubleLine(L["Time to level"],
                 FmtTime(perHour > 0 and (state.max - state.cur) / perHour * 3600 or nil), 0.8, 0.8, 0.8, 1, 1, 1)
         end
         if state.fake then
             GameTooltip:AddLine(" ")
-            GameTooltip:AddLine("A pretend wolf, just for fun. It earns the experience you earn and can't pass your level.", 0.6, 0.6, 0.6, true)
+            GameTooltip:AddLine(L["A pretend wolf, just for fun. It earns the experience you earn and can't pass your level."], 0.6, 0.6, 0.6, true)
         end
     end
     GameTooltip:AddLine(" ")
-    GameTooltip:AddLine(X.db.locked and "Shift-drag to move" or "Drag to move", 0.6, 0.6, 0.6)
-    GameTooltip:AddLine("Right-click for options  -  Ctrl+wheel to scale", 0.6, 0.6, 0.6)
+    GameTooltip:AddLine(X.db.locked and L["Shift-drag to move"] or L["Drag to move"], 0.6, 0.6, 0.6)
+    GameTooltip:AddLine(L["Right-click for options  -  Ctrl+wheel to scale"], 0.6, 0.6, 0.6)
     GameTooltip:Show()
 end
 

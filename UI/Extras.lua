@@ -1,5 +1,6 @@
 -- Hunter Pet Collector - minimap button, addon compartment and unit tooltips
 local ADDON, ns = ...
+local L = ns.L
 local W = ns.W
 
 ------------------------------------------------------------------------
@@ -16,21 +17,21 @@ end
 
 local function ScoreTooltip(owner, anchor)
     GameTooltip:SetOwner(owner, anchor or "ANCHOR_LEFT")
-    GameTooltip:AddLine("Hunter Pet Collector", 1, 1, 1)
+    GameTooltip:AddLine(L["Hunter Pet Collector"], 1, 1, 1)
     local points, count, total, maxPoints = ns.GetScore()
-    GameTooltip:AddDoubleLine("Points", ("%d / %d"):format(points, maxPoints), 0.8, 0.8, 0.8, 1, 0.82, 0)
-    GameTooltip:AddDoubleLine("Looks", ("%d / %d"):format(count, total), 0.8, 0.8, 0.8, 1, 1, 1)
+    GameTooltip:AddDoubleLine(L["Points"], ("%d / %d"):format(points, maxPoints), 0.8, 0.8, 0.8, 1, 0.82, 0)
+    GameTooltip:AddDoubleLine(L["Looks"], ("%d / %d"):format(count, total), 0.8, 0.8, 0.8, 1, 1, 1)
     local board = ns.SortedBoard()
     for i, e in ipairs(board) do
         if ns.IsMe(e.name) then
-            GameTooltip:AddDoubleLine("Leaderboard rank", ("#%d of %d"):format(i, #board), 0.8, 0.8, 0.8, 1, 1, 1)
+            GameTooltip:AddDoubleLine(L["Leaderboard rank"], L["#%d of %d"]:format(i, #board), 0.8, 0.8, 0.8, 1, 1, 1)
         end
     end
     GameTooltip:AddLine(" ")
-    GameTooltip:AddLine("Left-click: open the collection", 0.5, 0.5, 0.5)
-    GameTooltip:AddLine("Right-click: leaderboard", 0.5, 0.5, 0.5)
-    GameTooltip:AddLine("Shift-click: Pet XP Bar options", 0.5, 0.5, 0.5)
-    GameTooltip:AddLine("Drag: move button", 0.5, 0.5, 0.5)
+    GameTooltip:AddLine(L["Left-click: open the collection"], 0.5, 0.5, 0.5)
+    GameTooltip:AddLine(L["Right-click: leaderboard"], 0.5, 0.5, 0.5)
+    GameTooltip:AddLine(L["Shift-click: Pet XP Bar options"], 0.5, 0.5, 0.5)
+    GameTooltip:AddLine(L["Drag: move button"], 0.5, 0.5, 0.5)
     GameTooltip:Show()
 end
 ns.ScoreTooltip = ScoreTooltip
@@ -98,8 +99,8 @@ local function AddCodexLine(tooltip, unit)
     local look = ns.npcToLook[npc]
     if not look then return end
     local r = ns.RARITY[look.rarity]
-    local status = ns.IsCollected(look) and "|cff4cff4cCollected|r" or "|cffff5555Not collected|r"
-    tooltip:AddLine(("|TInterface\\Icons\\Ability_Hunter_BeastTaming:0|t |cff%s%s look|r  %s"):format(r.hex, r.name, status))
+    local status = ns.IsCollected(look) and ("|cff4cff4c" .. L["Collected"] .. "|r") or ("|cffff5555" .. L["Not collected"] .. "|r")
+    tooltip:AddLine(("|TInterface\\Icons\\Ability_Hunter_BeastTaming:0|t |cff%s%s|r  %s"):format(r.hex, L["%s look"]:format(r.name), status))
     tooltip:Show()
 end
 
