@@ -3,7 +3,7 @@ local ADDON, ns = ...
 local W = ns.W
 local L = ns.L
 
-local ROWS = 16
+local ROWS = 14
 local filter = "all"
 local page, list, mine, info, filterBtns
 
@@ -30,15 +30,24 @@ function ns.BuildBoard(parent)
 
     local title = W.Text(panel, "GameFontNormalLarge", 16, "LEFT")
     title:SetPoint("TOPLEFT", 16, -14)
-    title:SetText("Hunter Pet Collector Leaderboard - " .. (ns.IsMegaServer() and "WoW: Forever" or (GetRealmName and GetRealmName() or "")))
+    title:SetHeight(18)
+    title:SetText(L["Hunter Pet Collector Leaderboard - %s"]:format(ns.IsMegaServer() and "WoW: Forever" or (GetRealmName and GetRealmName() or "")))
+    title:SetWordWrap(false)
     title:SetTextColor(1, 1, 1)
 
     info = W.Text(panel, "GameFontDisableSmall", nil, "LEFT")
-    info:SetPoint("TOPLEFT", title, "BOTTOMLEFT", 0, -5)
-    info:SetText((ns.IsMegaServer() and "Every hunter playing WoW: Forever." or "Hunters on this server only.") .. " Shared through your guild, group, friends and anyone you've shared with before. /hpc comm checks the connection.")
+    info:SetPoint("TOPLEFT", panel, "TOPLEFT", 16, -38)
+    info:SetPoint("TOPRIGHT", panel, "TOPRIGHT", -16, -38)
+    info:SetHeight(34)
+    info:SetJustifyV("TOP")
+    info:SetWordWrap(true)
+    info:SetText((ns.IsMegaServer() and L["Every hunter playing WoW: Forever."] or L["Hunters on this server only."]) .. " " .. L["Shared through your guild, group, friends and anyone you've shared with before. /hpc comm checks the connection."])
 
     mine = W.Text(panel, "GameFontNormal", nil, "RIGHT")
-    mine:SetPoint("TOPRIGHT", -16, -16)
+    mine:SetPoint("TOPRIGHT", -16, -14)
+    mine:SetWidth(190)
+    mine:SetWordWrap(false)
+    title:SetPoint("TOPRIGHT", mine, "TOPLEFT", -12, 0)
 
     -- filter + refresh buttons
     filterBtns = {}
@@ -51,7 +60,7 @@ function ns.BuildBoard(parent)
     fGuild:SetScript("OnClick", function() filter = "guild"; ns.RefreshBoard() end)
 
     local refresh = W.Button(panel, "Ask for scores", 110, 22)
-    refresh:SetPoint("TOPRIGHT", -16, -48)
+    refresh:SetPoint("TOPRIGHT", info, "BOTTOMRIGHT", 0, -10)
     refresh.tooltip = "Ask other Pet Collector users nearby, in your guild and on your realm to share their scores."
     refresh:SetScript("OnClick", function(self)
         ns.AskServer()   -- first, while this is still the click
@@ -64,8 +73,8 @@ function ns.BuildBoard(parent)
 
     -- column header
     local head = CreateFrame("Frame", nil, panel)
-    head:SetPoint("TOPLEFT", 12, -98)
-    head:SetPoint("TOPRIGHT", -12, -98)
+    head:SetPoint("TOPLEFT", fAll, "BOTTOMLEFT", -4, -14)
+    head:SetPoint("TOPRIGHT", refresh, "BOTTOMRIGHT", 4, -14)
     head:SetHeight(20)
     local hbg = head:CreateTexture(nil, "BACKGROUND")
     hbg:SetAllPoints()
@@ -76,7 +85,7 @@ function ns.BuildBoard(parent)
         local t = W.Text(head, "GameFontNormalSmall", nil, c.justify)
         t:SetPoint("LEFT", x, 0)
         t:SetWidth(c.width - 10)
-        t:SetText(c.title)
+        t:SetText(L[c.title])
         t:SetTextColor(W.ACCENT[1], W.ACCENT[2], W.ACCENT[3])
         x = x + c.width
     end
@@ -164,11 +173,15 @@ function ns.BuildBoard(parent)
 
     page.empty = W.Text(panel, "GameFontDisable", nil, "CENTER")
     page.empty:SetPoint("CENTER", list, "CENTER")
-    page.empty:SetText("No other collectors seen yet.\nScores arrive as you meet other hunters using Hunter Pet Collector.")
+    page.empty:SetText(L["No other collectors seen yet.\nScores arrive as you meet other hunters using Hunter Pet Collector."])
 
     local foot = W.Text(panel, "GameFontDisableSmall", nil, "LEFT")
     foot:SetPoint("BOTTOMLEFT", 16, 12)
-    foot:SetText("|TInterface\\RaidFrame\\ReadyCheck-Ready:12|t received from the player   |TInterface\\RaidFrame\\ReadyCheck-Waiting:12|t relayed by someone else    Points: Common 5 - Uncommon 10 - Rare 25 - Epic 50 - Legendary 100")
+    foot:SetPoint("BOTTOMRIGHT", -16, 12)
+    foot:SetHeight(30)
+    foot:SetJustifyV("BOTTOM")
+    foot:SetWordWrap(true)
+    foot:SetText(L["|TInterface\\RaidFrame\\ReadyCheck-Ready:12|t received from the player   |TInterface\\RaidFrame\\ReadyCheck-Waiting:12|t relayed by someone else    Points: Common 5 - Uncommon 10 - Rare 25 - Epic 50 - Legendary 100"])
     return page
 end
 
@@ -185,12 +198,12 @@ function ns.RefreshBoard()
     if ns.playerClass == "HUNTER" then
         for i, e in ipairs(items) do
             if ns.IsMe(e.name) then
-                mine:SetText(("Your rank: |cffffd100#%d|r of %d"):format(i, #items))
+                mine:SetText(L["Your rank: |cffffd100#%d|r of %d"]:format(i, #items))
                 break
             end
         end
     else
-        mine:SetText("|cff999999Log in on a hunter to join the board|r")
+        mine:SetText("|cff999999" .. L["Log in on a hunter to join the board"] .. "|r")
     end
 end
 
