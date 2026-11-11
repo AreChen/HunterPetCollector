@@ -21,6 +21,7 @@ Locale\NPC_zhTW.lua
 Locale\NPC_ForeverExtra.lua
 Locale\Data.lua
 Core.lua
+Locale\OfficialNames.lua
 Data\Data_MoP.lua
 Data\Spawns_MoP.lua
 Data\Roles.lua

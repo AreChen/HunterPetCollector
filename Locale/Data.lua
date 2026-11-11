@@ -1,6 +1,9 @@
 local _, ns = ...
 function ns.LocalizeNPC(id, fallback)
-    return (ns.NPCNames and ns.NPCNames[id]) or fallback
+    local db = ns.db and ns.db.officialNPCNames
+    local flavor = db and db[ns.flavor]
+    local names = flavor and flavor[GetLocale()]
+    return (names and names[id]) or (ns.NPCNames and ns.NPCNames[id]) or fallback
 end
 
 function ns.LocalizeZone(zone, npc, flavor)

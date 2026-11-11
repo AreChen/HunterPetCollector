@@ -553,6 +553,7 @@ function ns.SelectLook(look)
     end
     detail.empty:SetShown(not show)
     if look then
+        for _, src in ipairs(look.sources) do ns.RequestOfficialNPCName(src.npc) end
         local r = ns.RARITY[look.rarity]
         local fam = ns.families[look.family]
         if detail.current ~= look then
@@ -829,6 +830,7 @@ function ns.RefreshCollection()
     for i, tile in ipairs(tiles) do
         local look = filtered[(state.page - 1) * per + i]
         if look then
+            if look.sources[1] then ns.RequestOfficialNPCName(look.sources[1].npc) end
             if tile.look ~= look then
                 tile.look = look
                 ShowLook(tile.model, look)
