@@ -1,0 +1,6 @@
+# Local editor and test output
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+.superpowers/

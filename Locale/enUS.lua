@@ -1,0 +1,3 @@
+-- English is the default; unknown keys remain readable.
+local _, ns = ...
+ns.L = setmetatable({}, { __index = function(_, key) return key end })

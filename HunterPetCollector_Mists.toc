@@ -1,0 +1,35 @@
+## Interface: 50504, 50503
+## Title: |cffabd473Hunter Pet Collector|r
+## Notes: A transmog-style journal of every tameable hunter pet look, with 3D previews, spawn map pins, collection points and a shared leaderboard.
+## Title-zhCN: |cffabd473猎人宠物收藏|r
+## Notes-zhCN: 收集、预览和追踪可驯服的猎人宠物外观。
+## Author: Ben
+## Version: 1.9.41
+## IconTexture: Interface\Icons\Ability_Hunter_BeastTaming
+## SavedVariables: HunterPetCodexDB, HPCPetXPDB
+## SavedVariablesPerCharacter: HunterPetCodexCharDB
+## AddonCompartmentFunc: HunterPetCodex_OnCompartmentClick
+## AddonCompartmentFuncOnEnter: HunterPetCodex_OnCompartmentEnter
+## AddonCompartmentFuncOnLeave: HunterPetCodex_OnCompartmentLeave
+## Category: Hunter
+
+Locale\enUS.lua
+Locale\zhCN.lua
+Core.lua
+Data\Data_MoP.lua
+Data\Spawns_MoP.lua
+Data\Roles.lua
+Data\PetFoods.lua
+UI\Widgets.lua
+UI\Logo.lua
+Comm.lua
+Backup.lua
+Map.lua
+Tracker.lua
+UI\Main.lua
+UI\Board.lua
+UI\Extras.lua
+UI\Options.lua
+UI\PetXPBar.lua
+UI\PetXPBarOptions.lua
+UI\PetFeed.lua
